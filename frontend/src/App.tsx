@@ -4,6 +4,7 @@ import { Login } from './pages/Login';
 import { CustomerCRM } from './pages/CustomerCRM';
 import { Inventory } from './pages/Inventory';
 import { SalesChallans } from './pages/SalesChallans';
+import { Dashboard } from './pages/Dashboard';
 import {
   Layers,
   ShieldCheck,
@@ -115,42 +116,7 @@ const MainContent: React.FC = () => {
       {activeTab === 'CRM' && <CustomerCRM />}
 
       {activeTab === 'DASHBOARD' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="glass-card p-6 rounded-2xl">
-            <ShieldCheck size={32} className="text-blue-500 mb-4" />
-            <h3 className="text-lg font-bold text-slate-100 mb-1">1. Auth & Roles</h3>
-            <p className="text-slate-400 text-sm">
-              Logged in as <strong className="text-slate-200">{user.name}</strong> ({user.role}). JWT token RBAC active.
-            </p>
-          </div>
-
-          <div className="glass-card p-6 rounded-2xl">
-            <Users size={32} className="text-emerald-500 mb-4" />
-            <h3 className="text-lg font-bold text-slate-100 mb-1">2. Customer CRM</h3>
-            <p className="text-slate-400 text-sm">
-              Active client management, search filters, and follow-up timeline activity logs.
-            </p>
-            <button onClick={() => setActiveTab('CRM')} className="btn-primary mt-4 py-2 px-3 text-xs">
-              Open CRM Module →
-            </button>
-          </div>
-
-          <div className="glass-card p-6 rounded-2xl">
-            <Database size={32} className="text-amber-500 mb-4" />
-            <h3 className="text-lg font-bold text-slate-100 mb-1">3. Inventory Module</h3>
-            <p className="text-slate-400 text-sm">
-              Stock alerts, minimum thresholds & movement log history (Step 4).
-            </p>
-          </div>
-
-          <div className="glass-card p-6 rounded-2xl">
-            <Rocket size={32} className="text-purple-500 mb-4" />
-            <h3 className="text-lg font-bold text-slate-100 mb-1">4. Sales Challans</h3>
-            <p className="text-slate-400 text-sm">
-              Auto-generated challan numbers, snapshot pricing & atomic stock logic (Step 5).
-            </p>
-          </div>
-        </div>
+        <Dashboard onNavigateTab={(tab) => setActiveTab(tab)} />
       )}
 
       {activeTab === 'INVENTORY' && <Inventory />}
