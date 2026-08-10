@@ -23,7 +23,7 @@ const MainContent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+      <div className="min-h-screen flex items-center justify-center text-slate-400">
         Loading session context...
       </div>
     );
@@ -33,110 +33,78 @@ const MainContent: React.FC = () => {
     return <Login />;
   }
 
-  const roleBadgeStyle: Record<string, { bg: string; color: string }> = {
-    ADMIN: { bg: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' },
-    SALES: { bg: 'rgba(16, 185, 129, 0.15)', color: '#34d399' },
-    WAREHOUSE: { bg: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' },
-    ACCOUNTS: { bg: 'rgba(139, 92, 246, 0.15)', color: '#c084fc' },
+  const roleBadgeStyle: Record<string, string> = {
+    ADMIN: 'bg-blue-500/15 text-blue-400 border border-blue-500/30',
+    SALES: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
+    WAREHOUSE: 'bg-amber-500/15 text-amber-400 border border-amber-500/30',
+    ACCOUNTS: 'bg-purple-500/15 text-purple-400 border border-purple-500/30',
   };
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1300px', margin: '0 auto' }}>
+    <div className="p-6 max-w-7xl mx-auto">
       {/* Top Navbar Header */}
-      <header style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem',
-        padding: '1rem 1.5rem',
-        borderRadius: '1rem',
-        background: '#1e293b',
-        border: '1px solid #334155'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <div style={{ background: 'var(--primary)', padding: '0.6rem', borderRadius: '0.75rem', display: 'flex' }}>
-            <Layers size={24} color="#fff" />
+      <header className="flex items-center justify-between mb-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 shadow-lg flex-wrap gap-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-blue-600 p-2.5 rounded-xl text-white shadow-md shadow-blue-600/30">
+            <Layers size={24} />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Fundsroom ERP</h1>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Operations & CRM Portal</p>
+            <h1 className="text-xl font-extrabold text-slate-100">Fundsroom ERP</h1>
+            <p className="text-xs text-slate-400">Operations & CRM Portal</p>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <nav style={{ display: 'flex', gap: '0.5rem', background: '#0f172a', padding: '0.35rem', borderRadius: '0.75rem', border: '1px solid #334155' }}>
+        <nav className="flex gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
           <button
             onClick={() => setActiveTab('DASHBOARD')}
-            className="btn"
-            style={{
-              background: activeTab === 'DASHBOARD' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'DASHBOARD' ? '#fff' : '#94a3b8',
-              padding: '0.45rem 0.85rem',
-              fontSize: '0.85rem'
-            }}
+            className={`py-2 px-3.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              activeTab === 'DASHBOARD' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+            }`}
           >
-            <LayoutDashboard size={16} /> Overview
+            <LayoutDashboard size={15} /> Overview
           </button>
 
           <button
             onClick={() => setActiveTab('CRM')}
-            className="btn"
-            style={{
-              background: activeTab === 'CRM' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'CRM' ? '#fff' : '#94a3b8',
-              padding: '0.45rem 0.85rem',
-              fontSize: '0.85rem'
-            }}
+            className={`py-2 px-3.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              activeTab === 'CRM' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+            }`}
           >
-            <Users size={16} /> Customer CRM
+            <Users size={15} /> Customer CRM
           </button>
 
           <button
             onClick={() => setActiveTab('INVENTORY')}
-            className="btn"
-            style={{
-              background: activeTab === 'INVENTORY' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'INVENTORY' ? '#fff' : '#94a3b8',
-              padding: '0.45rem 0.85rem',
-              fontSize: '0.85rem'
-            }}
+            className={`py-2 px-3.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              activeTab === 'INVENTORY' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+            }`}
           >
-            <PackageCheck size={16} /> Inventory
+            <PackageCheck size={15} /> Inventory
           </button>
 
           <button
             onClick={() => setActiveTab('CHALLANS')}
-            className="btn"
-            style={{
-              background: activeTab === 'CHALLANS' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'CHALLANS' ? '#fff' : '#94a3b8',
-              padding: '0.45rem 0.85rem',
-              fontSize: '0.85rem'
-            }}
+            className={`py-2 px-3.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+              activeTab === 'CHALLANS' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+            }`}
           >
-            <FileText size={16} /> Sales Challans
+            <FileText size={15} /> Sales Challans
           </button>
         </nav>
 
         {/* Logged in User Profile */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#0f172a', padding: '0.4rem 0.8rem', borderRadius: '0.6rem', border: '1px solid #334155' }}>
-            <UserIcon size={16} color="#94a3b8" />
-            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{user.name}</span>
-            <span
-              className="badge"
-              style={{
-                background: roleBadgeStyle[user.role]?.bg,
-                color: roleBadgeStyle[user.role]?.color,
-                marginLeft: '0.4rem'
-              }}
-            >
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+            <UserIcon size={16} className="text-slate-400" />
+            <span className="text-xs font-bold text-slate-200">{user.name}</span>
+            <span className={`px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase ${roleBadgeStyle[user.role]}`}>
               {user.role}
             </span>
           </div>
 
-          <button onClick={logout} className="btn btn-secondary" style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}>
-            <LogOut size={16} /> Logout
+          <button onClick={logout} className="btn-secondary py-1.5 px-3 text-xs flex items-center gap-1.5">
+            <LogOut size={15} /> Logout
           </button>
         </div>
       </header>
@@ -145,38 +113,38 @@ const MainContent: React.FC = () => {
       {activeTab === 'CRM' && <CustomerCRM />}
 
       {activeTab === 'DASHBOARD' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
-          <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-            <div style={{ color: 'var(--primary)', marginBottom: '1rem' }}><ShieldCheck size={32} /></div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>1. Auth & Roles</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-              Logged in as <strong>{user.name}</strong> ({user.role}). JWT token RBAC active.
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="glass-card p-6 rounded-2xl">
+            <ShieldCheck size={32} className="text-blue-500 mb-4" />
+            <h3 className="text-lg font-bold text-slate-100 mb-1">1. Auth & Roles</h3>
+            <p className="text-slate-400 text-sm">
+              Logged in as <strong className="text-slate-200">{user.name}</strong> ({user.role}). JWT token RBAC active.
             </p>
           </div>
 
-          <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-            <div style={{ color: 'var(--success)', marginBottom: '1rem' }}><Users size={32} /></div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>2. Customer CRM</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+          <div className="glass-card p-6 rounded-2xl">
+            <Users size={32} className="text-emerald-500 mb-4" />
+            <h3 className="text-lg font-bold text-slate-100 mb-1">2. Customer CRM</h3>
+            <p className="text-slate-400 text-sm">
               Active client management, search filters, and follow-up timeline activity logs.
             </p>
-            <button onClick={() => setActiveTab('CRM')} className="btn btn-primary" style={{ marginTop: '1rem', padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+            <button onClick={() => setActiveTab('CRM')} className="btn-primary mt-4 py-2 px-3 text-xs">
               Open CRM Module →
             </button>
           </div>
 
-          <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-            <div style={{ color: 'var(--warning)', marginBottom: '1rem' }}><Database size={32} /></div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>3. Inventory Module</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+          <div className="glass-card p-6 rounded-2xl">
+            <Database size={32} className="text-amber-500 mb-4" />
+            <h3 className="text-lg font-bold text-slate-100 mb-1">3. Inventory Module</h3>
+            <p className="text-slate-400 text-sm">
               Stock alerts, minimum thresholds & movement log history (Step 4).
             </p>
           </div>
 
-          <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: '1rem' }}>
-            <div style={{ color: 'var(--accent)', marginBottom: '1rem' }}><Rocket size={32} /></div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>4. Sales Challans</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+          <div className="glass-card p-6 rounded-2xl">
+            <Rocket size={32} className="text-purple-500 mb-4" />
+            <h3 className="text-lg font-bold text-slate-100 mb-1">4. Sales Challans</h3>
+            <p className="text-slate-400 text-sm">
               Auto-generated challan numbers, snapshot pricing & atomic stock logic (Step 5).
             </p>
           </div>
@@ -184,18 +152,18 @@ const MainContent: React.FC = () => {
       )}
 
       {activeTab === 'INVENTORY' && (
-        <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center', borderRadius: '1rem', color: '#94a3b8' }}>
-          <PackageCheck size={48} color="#f59e0b" style={{ marginBottom: '1rem' }} />
-          <h3 style={{ fontSize: '1.25rem', color: '#fff', fontWeight: 700 }}>Inventory Module (Step 4)</h3>
-          <p style={{ marginTop: '0.5rem' }}>Stock management and movement logs will be implemented in Step 4.</p>
+        <div className="glass-card p-12 text-center rounded-2xl text-slate-400">
+          <PackageCheck size={48} className="text-amber-500 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-slate-100">Inventory Module (Step 4)</h3>
+          <p className="mt-2 text-sm">Stock management and movement logs will be implemented in Step 4.</p>
         </div>
       )}
 
       {activeTab === 'CHALLANS' && (
-        <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center', borderRadius: '1rem', color: '#94a3b8' }}>
-          <FileText size={48} color="#8b5cf6" style={{ marginBottom: '1rem' }} />
-          <h3 style={{ fontSize: '1.25rem', color: '#fff', fontWeight: 700 }}>Sales Challans Module (Step 5)</h3>
-          <p style={{ marginTop: '0.5rem' }}>Sales challan creation and stock deduction logic will be implemented in Step 5.</p>
+        <div className="glass-card p-12 text-center rounded-2xl text-slate-400">
+          <FileText size={48} className="text-purple-500 mx-auto mb-4" />
+          <h3 className="text-xl font-bold text-slate-100">Sales Challans Module (Step 5)</h3>
+          <p className="mt-2 text-sm">Sales challan creation and stock deduction logic will be implemented in Step 5.</p>
         </div>
       )}
     </div>

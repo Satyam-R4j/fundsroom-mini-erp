@@ -12,7 +12,6 @@ import {
   Phone,
   Mail,
   Building,
-  FileText,
   Calendar,
   Send,
   MapPin,
@@ -181,14 +180,14 @@ export const CustomerCRM: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div className="flex flex-col gap-6">
       {/* Header & Action Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <Users color="#3b82f6" /> Customer CRM Management
+          <h2 className="text-2xl font-extrabold text-slate-100 flex items-center gap-2.5">
+            <Users className="text-blue-500" size={26} /> Customer CRM Management
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginTop: '0.2rem' }}>
+          <p className="text-slate-400 text-sm mt-1">
             Track sales leads, customer contacts, follow-up dates, and activity logs.
           </p>
         </div>
@@ -199,48 +198,32 @@ export const CustomerCRM: React.FC = () => {
             setEditingCustomer(null);
             setIsAddModalOpen(true);
           }}
-          className="btn btn-primary"
+          className="btn-primary py-2.5 px-4 flex items-center gap-2 text-sm"
         >
           <Plus size={18} /> Add New Customer
         </button>
       </div>
 
       {/* Filter Controls Bar */}
-      <div className="glass-panel" style={{ padding: '1rem', borderRadius: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
-          <Search size={18} color="#64748b" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
+      <div className="glass-card p-4 rounded-xl flex flex-wrap gap-4 items-center">
+        <div className="relative flex-1 min-w-[260px]">
+          <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             placeholder="Search by name, business, email or mobile..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.6rem 1rem 0.6rem 2.5rem',
-              borderRadius: '0.5rem',
-              background: '#0f172a',
-              border: '1px solid #334155',
-              color: '#f8fafc',
-              fontSize: '0.875rem',
-              outline: 'none',
-            }}
+            className="w-full py-2.5 pl-10 pr-4 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500 transition-colors"
           />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Filter size={16} color="#94a3b8" />
-          <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>Type:</span>
+        <div className="flex items-center gap-2">
+          <Filter size={16} className="text-slate-400" />
+          <span className="text-sm text-slate-400 font-medium">Type:</span>
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            style={{
-              padding: '0.55rem 0.85rem',
-              borderRadius: '0.5rem',
-              background: '#0f172a',
-              border: '1px solid #334155',
-              color: '#f8fafc',
-              fontSize: '0.85rem',
-            }}
+            className="py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
           >
             <option value="ALL">All Types</option>
             <option value="RETAIL">Retail</option>
@@ -249,19 +232,12 @@ export const CustomerCRM: React.FC = () => {
           </select>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>Status:</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-slate-400 font-medium">Status:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            style={{
-              padding: '0.55rem 0.85rem',
-              borderRadius: '0.5rem',
-              background: '#0f172a',
-              border: '1px solid #334155',
-              color: '#f8fafc',
-              fontSize: '0.85rem',
-            }}
+            className="py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
           >
             <option value="ALL">All Statuses</option>
             <option value="LEAD">Lead</option>
@@ -272,117 +248,107 @@ export const CustomerCRM: React.FC = () => {
       </div>
 
       {/* Customer Data Table */}
-      <div className="glass-panel" style={{ borderRadius: '0.75rem', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
-          <thead>
-            <tr style={{ background: '#0f172a', borderBottom: '1px solid #334155', color: '#94a3b8', fontSize: '0.75rem', textTransform: 'uppercase' }}>
-              <th style={{ padding: '0.85rem 1rem' }}>Customer & Business</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Contact</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Type</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Status</th>
-              <th style={{ padding: '0.85rem 1rem' }}>Follow-up Date</th>
-              <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
-                  Loading customer records...
-                </td>
+      <div className="glass-card rounded-xl overflow-hidden border border-slate-800">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="bg-slate-950 border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                <th className="py-3.5 px-4 font-semibold">Customer & Business</th>
+                <th className="py-3.5 px-4 font-semibold">Contact Details</th>
+                <th className="py-3.5 px-4 font-semibold">Type</th>
+                <th className="py-3.5 px-4 font-semibold">Status</th>
+                <th className="py-3.5 px-4 font-semibold">Follow-up Date</th>
+                <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
               </tr>
-            ) : customers.length === 0 ? (
-              <tr>
-                <td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
-                  No customer records found matching filter criteria.
-                </td>
-              </tr>
-            ) : (
-              customers.map((c) => (
-                <tr key={c.id} style={{ borderBottom: '1px solid #334155', transition: 'background 0.15s ease' }}>
-                  <td style={{ padding: '0.85rem 1rem' }}>
-                    <div style={{ fontWeight: 700, color: '#f8fafc' }}>{c.name}</div>
-                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <Building size={13} /> {c.businessName} {c.gstNumber && `(${c.gstNumber})`}
-                    </div>
-                  </td>
-                  <td style={{ padding: '0.85rem 1rem' }}>
-                    <div style={{ color: '#cbd5e1', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <Phone size={13} color="#60a5fa" /> {c.mobile}
-                    </div>
-                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <Mail size={13} color="#64748b" /> {c.email}
-                    </div>
-                  </td>
-                  <td style={{ padding: '0.85rem 1rem' }}>
-                    <span style={{
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '0.35rem',
-                      background: c.customerType === 'DISTRIBUTOR' ? 'rgba(139, 92, 246, 0.2)' : c.customerType === 'WHOLESALE' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(100, 116, 139, 0.2)',
-                      color: c.customerType === 'DISTRIBUTOR' ? '#c084fc' : c.customerType === 'WHOLESALE' ? '#60a5fa' : '#cbd5e1'
-                    }}>
-                      {c.customerType}
-                    </span>
-                  </td>
-                  <td style={{ padding: '0.85rem 1rem' }}>
-                    <span className={`badge badge-${c.status.toLowerCase()}`}>
-                      {c.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: '0.85rem 1rem', color: c.followUpDate ? '#fbbf24' : '#64748b' }}>
-                    {c.followUpDate ? (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600 }}>
-                        <Calendar size={14} /> {new Date(c.followUpDate).toLocaleDateString()}
-                      </span>
-                    ) : (
-                      'None set'
-                    )}
-                  </td>
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                      <button
-                        onClick={() => handleOpenDetail(c.id)}
-                        className="btn btn-secondary"
-                        style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}
-                        title="View detail page and notes timeline"
-                      >
-                        <Eye size={14} /> Notes ({c._count?.followUpLogs || 0})
-                      </button>
-                      <button
-                        onClick={() => handleOpenEdit(c)}
-                        className="btn btn-secondary"
-                        style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}
-                        title="Edit Customer Details"
-                      >
-                        <Edit2 size={14} />
-                      </button>
-                    </div>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60">
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="py-8 text-center text-slate-400">
+                    Loading customer records...
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : customers.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-8 text-center text-slate-400">
+                    No customer records found matching filter criteria.
+                  </td>
+                </tr>
+              ) : (
+                customers.map((c) => (
+                  <tr key={c.id} className="hover:bg-slate-800/40 transition-colors">
+                    <td className="py-3.5 px-4">
+                      <div className="font-bold text-slate-100">{c.name}</div>
+                      <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
+                        <Building size={13} className="text-slate-500" /> {c.businessName} {c.gstNumber && `(${c.gstNumber})`}
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <div className="text-slate-200 flex items-center gap-1.5">
+                        <Phone size={13} className="text-blue-400" /> {c.mobile}
+                      </div>
+                      <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
+                        <Mail size={13} className="text-slate-500" /> {c.email}
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${
+                        c.customerType === 'DISTRIBUTOR' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' :
+                        c.customerType === 'WHOLESALE' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
+                        'bg-slate-800 text-slate-300 border border-slate-700'
+                      }`}>
+                        {c.customerType}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                        c.status === 'ACTIVE' ? 'badge-active' :
+                        c.status === 'LEAD' ? 'badge-lead' : 'badge-inactive'
+                      }`}>
+                        {c.status}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      {c.followUpDate ? (
+                        <span className="flex items-center gap-1.5 text-amber-400 font-medium text-xs">
+                          <Calendar size={14} /> {new Date(c.followUpDate).toLocaleDateString()}
+                        </span>
+                      ) : (
+                        <span className="text-slate-500 text-xs">None set</span>
+                      )}
+                    </td>
+                    <td className="py-3.5 px-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleOpenDetail(c.id)}
+                          className="btn-secondary py-1.5 px-2.5 text-xs flex items-center gap-1.5"
+                          title="View detail page and notes timeline"
+                        >
+                          <Eye size={14} /> Notes ({c._count?.followUpLogs || 0})
+                        </button>
+                        <button
+                          onClick={() => handleOpenEdit(c)}
+                          className="btn-secondary py-1.5 px-2.5 text-xs"
+                          title="Edit Customer Details"
+                        >
+                          <Edit2 size={14} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Add / Edit Customer Modal */}
       {(isAddModalOpen || editingCustomer) && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(15, 23, 42, 0.8)',
-          backdropFilter: 'blur(4px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 100,
-          padding: '1rem'
-        }}>
-          <div className="glass-panel" style={{ width: '100%', maxWidth: '600px', borderRadius: '1rem', padding: '1.5rem', background: '#1e293b' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid #334155', paddingBottom: '0.75rem' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass-card w-full max-w-2xl rounded-2xl p-6 bg-slate-900 border border-slate-800 shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+              <h3 className="text-lg font-bold text-slate-100">
                 {editingCustomer ? 'Edit Customer Profile' : 'Add New Customer'}
               </h3>
               <button
@@ -390,74 +356,74 @@ export const CustomerCRM: React.FC = () => {
                   setIsAddModalOpen(false);
                   setEditingCustomer(null);
                 }}
-                style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                className="text-slate-400 hover:text-slate-200 transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
 
-            <form onSubmit={handleSubmitCustomer} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <form onSubmit={handleSubmitCustomer} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Customer Name *</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Customer Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Business Name *</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Business Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.businessName}
                   onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Mobile Number *</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Mobile Number *</label>
                 <input
                   type="text"
                   required
                   value={formData.mobile}
                   onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Email Address *</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Email Address *</label>
                 <input
                   type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>GST Number (Optional)</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">GST Number (Optional)</label>
                 <input
                   type="text"
                   value={formData.gstNumber}
                   onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
                   placeholder="e.g. 27AAACA12341Z5"
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Customer Type</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Customer Type</label>
                 <select
                   value={formData.customerType}
                   onChange={(e) => setFormData({ ...formData, customerType: e.target.value as any })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 >
                   <option value="RETAIL">Retail</option>
                   <option value="WHOLESALE">Wholesale</option>
@@ -466,11 +432,11 @@ export const CustomerCRM: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Status</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Status</label>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 >
                   <option value="LEAD">Lead</option>
                   <option value="ACTIVE">Active</option>
@@ -479,38 +445,38 @@ export const CustomerCRM: React.FC = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Follow-up Date</label>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Follow-up Date</label>
                 <input
                   type="date"
                   value={formData.followUpDate}
                   onChange={(e) => setFormData({ ...formData, followUpDate: e.target.value })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
-              <div style={{ gridColumn: '1 / -1' }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.3rem' }}>Address *</label>
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">Address *</label>
                 <textarea
                   required
                   rows={2}
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  style={{ width: '100%', padding: '0.55rem', borderRadius: '0.4rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', fontSize: '0.85rem' }}
+                  className="w-full py-2 px-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
-              <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+              <div className="sm:col-span-2 flex justify-end gap-3 mt-3">
                 <button
                   type="button"
                   onClick={() => {
                     setIsAddModalOpen(false);
                     setEditingCustomer(null);
                   }}
-                  className="btn btn-secondary"
+                  className="btn-secondary py-2 px-4 text-sm"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn-primary py-2 px-4 text-sm">
                   {editingCustomer ? 'Update Profile' : 'Save Customer'}
                 </button>
               </div>
@@ -521,93 +487,67 @@ export const CustomerCRM: React.FC = () => {
 
       {/* Customer Detail Drawer & Follow-up History */}
       {selectedCustomer && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(15, 23, 42, 0.7)',
-          backdropFilter: 'blur(4px)',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          zIndex: 100
-        }}>
-          <div style={{
-            width: '100%',
-            maxWidth: '520px',
-            background: '#1e293b',
-            height: '100%',
-            overflowY: 'auto',
-            padding: '1.5rem',
-            borderLeft: '1px solid #334155',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.25rem'
-          }}>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex justify-end z-50">
+          <div className="w-full max-w-xl bg-slate-900 h-full overflow-y-auto p-6 border-l border-slate-800 flex flex-col gap-6 shadow-2xl">
             {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#f8fafc' }}>{selectedCustomer.name}</h3>
-                <p style={{ color: '#60a5fa', fontSize: '0.85rem', fontWeight: 600 }}>{selectedCustomer.businessName}</p>
+                <h3 className="text-xl font-extrabold text-slate-100">{selectedCustomer.name}</h3>
+                <p className="text-blue-400 text-sm font-semibold mt-0.5">{selectedCustomer.businessName}</p>
               </div>
-              <button onClick={() => setSelectedCustomer(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+              <button onClick={() => setSelectedCustomer(null)} className="text-slate-400 hover:text-slate-200">
                 <X size={22} />
               </button>
             </div>
 
             {/* Quick Stats Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', background: '#0f172a', padding: '1rem', borderRadius: '0.6rem', fontSize: '0.8rem' }}>
+            <div className="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs">
               <div>
-                <span style={{ color: '#94a3b8', display: 'block' }}>Type</span>
-                <span style={{ fontWeight: 700, color: '#f8fafc' }}>{selectedCustomer.customerType}</span>
+                <span className="text-slate-500 block mb-0.5">Type</span>
+                <span className="font-bold text-slate-200">{selectedCustomer.customerType}</span>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', display: 'block' }}>Status</span>
-                <span className={`badge badge-${selectedCustomer.status.toLowerCase()}`}>{selectedCustomer.status}</span>
+                <span className="text-slate-500 block mb-0.5">Status</span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  selectedCustomer.status === 'ACTIVE' ? 'badge-active' :
+                  selectedCustomer.status === 'LEAD' ? 'badge-lead' : 'badge-inactive'
+                }`}>{selectedCustomer.status}</span>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', display: 'block' }}>Mobile</span>
-                <span style={{ fontWeight: 600, color: '#cbd5e1' }}>{selectedCustomer.mobile}</span>
+                <span className="text-slate-500 block mb-0.5">Mobile</span>
+                <span className="font-semibold text-slate-300">{selectedCustomer.mobile}</span>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', display: 'block' }}>GST #</span>
-                <span style={{ fontWeight: 600, color: '#cbd5e1' }}>{selectedCustomer.gstNumber || 'N/A'}</span>
+                <span className="text-slate-500 block mb-0.5">GST #</span>
+                <span className="font-semibold text-slate-300">{selectedCustomer.gstNumber || 'N/A'}</span>
               </div>
             </div>
 
             <div>
-              <span style={{ color: '#94a3b8', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.2rem' }}>
-                <MapPin size={14} /> Address
+              <span className="text-slate-400 text-xs font-semibold flex items-center gap-1.5 mb-1">
+                <MapPin size={14} className="text-slate-500" /> Address
               </span>
-              <p style={{ fontSize: '0.85rem', color: '#cbd5e1' }}>{selectedCustomer.address}</p>
+              <p className="text-sm text-slate-300 leading-relaxed">{selectedCustomer.address}</p>
             </div>
 
             {/* Add Follow-up Note Form */}
-            <div style={{ background: '#0f172a', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #334155' }}>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <MessageSquare size={16} color="#3b82f6" /> Add Follow-up Activity Note
+            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <h4 className="text-sm font-bold text-slate-200 mb-3 flex items-center gap-2">
+                <MessageSquare size={16} className="text-blue-500" /> Add Follow-up Activity Note
               </h4>
-              <form onSubmit={handleAddNote} style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <form onSubmit={handleAddNote} className="flex flex-col gap-3">
                 <textarea
                   rows={2}
                   required
                   placeholder="Record client discussion, quotation updates, or call summary..."
                   value={newNoteText}
                   onChange={(e) => setNewNoteText(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.6rem',
-                    borderRadius: '0.4rem',
-                    background: '#1e293b',
-                    border: '1px solid #334155',
-                    color: '#fff',
-                    fontSize: '0.85rem',
-                    outline: 'none'
-                  }}
+                  className="w-full p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
                 />
                 <button
                   type="submit"
                   disabled={submittingNote}
-                  className="btn btn-primary"
-                  style={{ alignSelf: 'flex-end', padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}
+                  className="btn-primary self-end py-1.5 px-3 text-xs flex items-center gap-1.5"
                 >
                   <Send size={14} /> {submittingNote ? 'Saving...' : 'Add Note'}
                 </button>
@@ -616,20 +556,20 @@ export const CustomerCRM: React.FC = () => {
 
             {/* Follow-up Timeline */}
             <div>
-              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.75rem', color: '#94a3b8' }}>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
                 Follow-up History Timeline ({selectedCustomer.followUpLogs?.length || 0})
               </h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div className="flex flex-col gap-3">
                 {!selectedCustomer.followUpLogs || selectedCustomer.followUpLogs.length === 0 ? (
-                  <p style={{ fontSize: '0.85rem', color: '#64748b', fontStyle: 'italic' }}>No activity notes recorded yet.</p>
+                  <p className="text-sm text-slate-500 italic">No activity notes recorded yet.</p>
                 ) : (
                   selectedCustomer.followUpLogs.map((log) => (
-                    <div key={log.id} style={{ background: '#0f172a', padding: '0.85rem', borderRadius: '0.6rem', borderLeft: '3px solid #3b82f6' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem', fontSize: '0.75rem' }}>
-                        <span style={{ fontWeight: 700, color: '#60a5fa' }}>{log.author.name} ({log.author.role})</span>
-                        <span style={{ color: '#64748b' }}>{new Date(log.createdAt).toLocaleString()}</span>
+                    <div key={log.id} className="bg-slate-950 p-3.5 rounded-xl border-l-4 border-blue-500 border border-slate-800">
+                      <div className="flex justify-between items-center mb-1 text-xs">
+                        <span className="font-bold text-blue-400">{log.author.name} ({log.author.role})</span>
+                        <span className="text-slate-500 text-[11px]">{new Date(log.createdAt).toLocaleString()}</span>
                       </div>
-                      <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: '1.4' }}>{log.note}</p>
+                      <p className="text-sm text-slate-300 leading-normal">{log.note}</p>
                     </div>
                   ))
                 )}
