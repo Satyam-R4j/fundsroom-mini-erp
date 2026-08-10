@@ -1,0 +1,125 @@
+// Database connection configuration using SQLite for easy local dev
+// (Can be swapped to postgresql provider for production on Supabase/Neon)
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User roles in the ERP system: ADMIN, SALES, WAREHOUSE, ACCOUNTS
+
+// Internal team members with role-based access
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("SALES") // ADMIN | SALES | WAREHOUSE | ACCOUNTS
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  customerNotes CustomerNote[]
+  stockLogs     StockLog[]
+  challans      Challan[]
+}
+
+// CRM Customer records
+model Customer {
+  id           String   @id @default(uuid())
+  name         String
+  mobile       String
+  email        String
+  businessName String
+  gstNumber    String?
+  customerType String   @default("RETAIL") // RETAIL | WHOLESALE | DISTRIBUTOR
+  address      String
+  status       String   @default("LEAD") // LEAD | ACTIVE | INACTIVE
+  followUpDate DateTime?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relationships
+  followUpLogs CustomerNote[]
+  challans     Challan[]
+}
+
+// Follow-up activity log for CRM
+model CustomerNote {
+  id         String   @id @default(uuid())
+  customerId String
+  note       String
+  createdBy  String
+  createdAt  DateTime @default(now())
+
+  // Relationships
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  author   User     @relation(fields: [createdBy], references: [id])
+}
+
+// Product catalog & live stock levels
+model Product {
+  id             String   @id @default(uuid())
+  name           String
+  sku            String   @unique
+  category       String
+  unitPrice      Float
+  currentStock   Int      @default(0)
+  minStockAlert  Int      @default(5)
+  location       String   @default("Main Warehouse")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relationships
+  stockLogs StockLog[]
+}
+
+// Detailed audit trail of all inventory changes
+model StockLog {
+  id              String   @id @default(uuid())
+  productId       String
+  quantityChanged Int
+  movementType    String   // IN | OUT
+  reason          String
+  createdBy       String
+  timestamp       DateTime @default(now())
+
+  // Relationships
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [createdBy], references: [id])
+}
+
+// Sales Challan header
+model Challan {
+  id            String   @id @default(uuid())
+  challanNumber String   @unique
+  customerId    String
+  totalQuantity Int      @default(0)
+  totalAmount   Float    @default(0.0)
+  status        String   @default("DRAFT") // DRAFT | CONFIRMED | CANCELLED
+  createdBy     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  customer Customer      @relation(fields: [customerId], references: [id])
+  author   User          @relation(fields: [createdBy], references: [id])
+  items    ChallanItem[]
+}
+
+// Line items in a sales challan (stores historical product price/name snapshot)
+model ChallanItem {
+  id                  String  @id @default(uuid())
+  challanId           String
+  productId           String
+  productNameSnapshot String
+  unitPriceSnapshot   Float
+  quantity            Int
+
+  // Relationships
+  challan Challan @relation(fields: [challanId], references: [id], onDelete: Cascade)
+}
