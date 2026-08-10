@@ -1,0 +1,14 @@
+{
+  "name": "fundsroom-mini-erp",
+  "version": "1.0.0",
+  "description": "Mini ERP + CRM Operations Portal for Fundsroom Assignment",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
