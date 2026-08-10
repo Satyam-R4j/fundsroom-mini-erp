@@ -1,5 +1,3 @@
-// Database connection configuration using SQLite for easy local dev
-// (Can be swapped to postgresql provider for production on Supabase/Neon)
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
@@ -9,7 +7,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// User roles in the ERP system: ADMIN, SALES, WAREHOUSE, ACCOUNTS
 
 // Internal team members with role-based access
 model User {
@@ -17,7 +14,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("SALES") // ADMIN | SALES | WAREHOUSE | ACCOUNTS
+  role      String   @default("SALES")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -35,9 +32,9 @@ model Customer {
   email        String
   businessName String
   gstNumber    String?
-  customerType String   @default("RETAIL") // RETAIL | WHOLESALE | DISTRIBUTOR
+  customerType String   @default("RETAIL")
   address      String
-  status       String   @default("LEAD") // LEAD | ACTIVE | INACTIVE
+  status       String   @default("LEAD")
   followUpDate DateTime?
   notes        String?
   createdAt    DateTime @default(now())

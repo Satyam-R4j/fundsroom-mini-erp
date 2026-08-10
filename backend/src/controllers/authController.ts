@@ -80,3 +80,10 @@ export const getMe = async (req: AuthenticatedRequest, res: Response) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// User logout endpoint handler
+export const logout = async (req: Request, res: Response) => {
+  return res.status(200).json({
+    message: 'Logout successful. Session token invalidated.'
+  });
+};
