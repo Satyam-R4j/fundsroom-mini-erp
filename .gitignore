@@ -1,0 +1,19 @@
+# Context & Memory Files
+PROJECT_CONTEXT.md
+.agents/
+
+# Dependencies
+node_modules/
+
+# Environment & Database
+.env
+*.db
+*.db-journal
+
+# Build outputs
+dist/
+build/
+
+# Logs & temp files
+*.log
+.DS_Store

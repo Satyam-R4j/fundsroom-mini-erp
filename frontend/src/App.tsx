@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './pages/Login';
 import { CustomerCRM } from './pages/CustomerCRM';
+import { Inventory } from './pages/Inventory';
 import {
   Layers,
   ShieldCheck,
@@ -151,13 +152,7 @@ const MainContent: React.FC = () => {
         </div>
       )}
 
-      {activeTab === 'INVENTORY' && (
-        <div className="glass-card p-12 text-center rounded-2xl text-slate-400">
-          <PackageCheck size={48} className="text-amber-500 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-slate-100">Inventory Module (Step 4)</h3>
-          <p className="mt-2 text-sm">Stock management and movement logs will be implemented in Step 4.</p>
-        </div>
-      )}
+      {activeTab === 'INVENTORY' && <Inventory />}
 
       {activeTab === 'CHALLANS' && (
         <div className="glass-card p-12 text-center rounded-2xl text-slate-400">
