@@ -5,6 +5,14 @@
 
 ---
 
+## 🌐 Live Application & API Deployment URLs
+
+- 🚀 **Live Frontend Web App**: [https://fundsroom-erp-app.onrender.com/](https://fundsroom-erp-app.onrender.com/)
+- ⚡️ **Live Backend REST API**: [https://fundsroom-mini-erp-qcuy.onrender.com/api](https://fundsroom-mini-erp-qcuy.onrender.com/api)
+- 🐘 **Live Database**: Cloud PostgreSQL hosted on **Neon** (`ep-aged-flower-azk5brgu.c-3.ap-southeast-1.aws.neon.tech`)
+
+---
+
 ## 🏢 Business Context & Core Modules
 
 ### 1. Authentication & Role-Based Access Control (RBAC)
@@ -113,7 +121,7 @@ A full Postman collection is exported at `docs/postman_collection.json`.
 ### How to Import & Use:
 1. Open Postman and click **Import**.
 2. Select [docs/postman_collection.json](file:///c:/OneDrive/Desktop/Project/Pro-Projects/fundsroom_assignment/docs/postman_collection.json).
-3. The collection includes pre-configured environment variables (`{{baseUrl}}` = `http://localhost:5000/api`) and Bearer token headers for:
+3. The collection includes pre-configured environment variables (`{{baseUrl}}` = `https://fundsroom-mini-erp-qcuy.onrender.com/api`) and Bearer token headers for:
    - `POST /api/auth/login` (Login with Admin/Sales/Warehouse/Accounts credentials)
    - `GET /api/auth/me` (Profile Check)
    - `POST /api/auth/logout`
@@ -131,11 +139,11 @@ A full Postman collection is exported at `docs/postman_collection.json`.
 
 ---
 
-## 🌐 Deployment Instructions
+## 🌐 Live Deployment Overview
 
-- **Database**: Cloud PostgreSQL deployed on **Neon** (`neon.tech`) in AWS AP-Southeast-1.
-- **Frontend**: Ready to deploy on **Vercel** / **Netlify** (`cd frontend && npm run build`). Set environment variable `VITE_API_URL` to live backend domain.
-- **Backend**: Ready to deploy on **Render** / **Railway** (`cd backend && npm run build`). Set environment variables `PORT`, `JWT_SECRET`, and `DATABASE_URL`.
+- **Frontend**: Deployed on **Render Static Site** at [https://fundsroom-erp-app.onrender.com/](https://fundsroom-erp-app.onrender.com/).
+- **Backend**: Deployed on **Render Web Service** at [https://fundsroom-mini-erp-qcuy.onrender.com/api](https://fundsroom-mini-erp-qcuy.onrender.com/api).
+- **Database**: Cloud PostgreSQL hosted on **Neon**.
 
 ---
 
