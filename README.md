@@ -1,87 +1,100 @@
 # Fundsroom Mini ERP + CRM Operations Portal
 
 > **Full Stack Developer Case Study** for **Fundsroom Infotech Pvt. Ltd.**  
-> A full-stack Operations Portal managing Customers, Inventory, Stock Movement Logs, and Sales Challans.
+> An enterprise-grade, full-stack Operations Portal managing Auth/RBAC, Customer CRM, Inventory Stock Audit Trail, and Sales Challans.
 
 ---
 
-## 🚀 Key Modules & Business Logic
+## 🏢 Business Context & Core Modules
 
 ### 1. Authentication & Role-Based Access Control (RBAC)
-- **JWT Session Tokens**: Secure token-based authentication with expiration handling.
+- **JWT Authentication**: Secure Bearer token session authentication with custom payload signed via `jsonwebtoken`.
 - **4 System Roles**:
-  - 👑 **ADMIN**: Unrestricted system management and oversight.
-  - 💼 **SALES**: Customer onboarding, lead pipeline management, and issuing Sales Challans.
-  - 📦 **WAREHOUSE**: Stock intake, inventory management, and dispatch log auditing.
-  - 📊 **ACCOUNTS**: Invoice auditing, revenue metrics, and accounts management.
-- **Test Credentials**: Quick role-switching buttons on the login screen for seamless evaluation.
+  - 👑 **ADMIN**: Full system access, product catalog creation, user role management, and operational oversight.
+  - 💼 **SALES**: Lead management, client follow-up tracking, and issuing Sales Challans.
+  - 📦 **WAREHOUSE**: Stock intake, inventory management, low-stock alerts, and stock movement log auditing.
+  - 📊 **ACCOUNTS**: Revenue auditing, challan confirmation, and financial summary reporting.
+- **Role Shortcuts**: Built-in test credential selector on the login screen for quick role testing.
 
 ### 2. Customer CRM Module
-- **Customer Lifecycle Tracking**: Manage accounts across `LEAD`, `ACTIVE`, and `INACTIVE` stages.
-- **Account Classification**: Categorize by `RETAIL`, `WHOLESALE`, and `DISTRIBUTOR`.
-- **Search & Filter Pipeline**: Instant search across customer name, business name, email, and mobile.
-- **Activity Log Audit Trail**: Timestamped follow-up log history attached to each customer.
+- **Customer Account Fields**: Customer Name, Mobile Number, Email, Business Name, Optional GST Number, Address, Status (`LEAD`, `ACTIVE`, `INACTIVE`), Customer Type (`RETAIL`, `WHOLESALE`, `DISTRIBUTOR`), Follow-up Date, and Notes.
+- **Search & Filters**: Instant multi-attribute search across names, mobile, business, and status.
+- **Activity Timeline**: Dedicated follow-up activity log attached to every customer account.
 
 ### 3. Product & Inventory Module
-- **Live Stock Level Monitoring**: Real-time stock counts with automated **Low Stock Warnings** (🔴 when `currentStock <= minStockAlert`).
-- **Stock Movement Log Audit Trail**: Every stock change requires an `IN` (Receive) or `OUT` (Dispatch) movement type, quantity, and reason.
-- **Negative Stock Prevention**: Strict backend API validation prevents stock levels from dropping below zero, returning helpful error messages.
+- **Product Catalog**: Product Name, SKU/Code (Unique constraint), Category, Unit Price, Current Stock, Minimum Stock Alert Threshold, and Warehouse Location.
+- **Live Stock Alerts**: Automated **Low Stock Warnings** (🔴 triggered when `currentStock <= minStockAlert`).
+- **Stock Movement Log Audit Trail**: Comprehensive tracking of every stock change (`IN` for intake, `OUT` for dispatch) with `quantityChanged`, `reason`, `createdBy` user, and timestamp.
+- **Negative Stock Protection**: Backend API validation blocks any stock deduction that would result in negative stock, returning explicit HTTP 400 errors.
 
 ### 4. Sales Challan & Invoicing Module
-- **Auto Sequential Numbering**: Automatically formats challan IDs (e.g. `CHAL-2026-0001`, `CHAL-2026-0002`).
-- **Snapshot Pricing**: Line items store `productNameSnapshot` and `unitPriceSnapshot` to preserve price history even if catalog prices change later.
+- **Auto Sequential Numbering**: Automatically formats challan numbers e.g. `CHAL-2026-0001`, `CHAL-2026-0002`.
+- **Price & Name Snapshot Data**: Stores `productNameSnapshot` and `unitPriceSnapshot` in line items to preserve historical price integrity even if catalog prices change later.
 - **Atomic Stock Deduction on Confirmation**:
-  - `DRAFT` status reserves orders without immediate stock deduction.
-  - Saving as or transitioning to `CONFIRMED` verifies warehouse stock for all line items. If stock is sufficient, it deducts inventory atomically and creates `StockLog` audit entries.
-- **Printable Document Generator**: Official delivery note/invoice preview with company header, billing address, line item breakdown, totals, signature blocks, and `window.print()` support.
+  - `DRAFT` status allows preparing orders without immediate inventory deduction.
+  - Saving as or transitioning to `CONFIRMED` performs atomic validation checking warehouse stock availability for all products. If stock is sufficient, it deducts inventory atomically and creates `StockLog` audit entries (`movementType: 'OUT'`).
+- **Printable Delivery Note & Invoice**: Official document preview with company header (Fundsroom Infotech), customer billing address, itemized breakdown, totals, signature blocks, and `window.print()` support.
 
-### 5. ERP Executive Summary Dashboard
-- Real-time operational KPIs: Total Customers, Active Leads, Total Inventory Units, Low Stock Alert Count, Confirmed Orders, and Confirmed Revenue (₹).
-- System Architecture status badges (Prisma SQLite DB, JWT Auth, API Server Health).
+### 5. ERP Executive Overview Dashboard
+- Aggregated real-time KPIs: Total Customers, Active Leads, Total Inventory Units, Low Stock Alert Count, Confirmed Orders, and Total Confirmed Revenue (₹).
+- System Architecture status badges (Neon Cloud PostgreSQL status, JWT Auth status, Backend REST API Health).
 
 ---
 
-## 🔑 Seeded Test Credentials
+## 🔑 Test System Credentials
 
-| Role | Email | Password |
-|---|---|---|
-| 👑 **Admin** | `admin@fundsroom.com` | `admin123` |
-| 💼 **Sales** | `sales@fundsroom.com` | `admin123` |
-| 📦 **Warehouse** | `warehouse@fundsroom.com` | `admin123` |
-| 📊 **Accounts** | `accounts@fundsroom.com` | `admin123` |
+| Role | Email | Password | Access Privileges |
+|---|---|---|---|
+| 👑 **Admin** | `admin@fundsroom.com` | `admin123` | Unrestricted Access |
+| 💼 **Sales** | `sales@fundsroom.com` | `admin123` | CRM, Sales Challans, Inventory Read |
+| 📦 **Warehouse** | `warehouse@fundsroom.com` | `admin123` | Inventory, Stock Movements, Challan Dispatch |
+| 📊 **Accounts** | `accounts@fundsroom.com` | `admin123` | Challan Auditing, Revenue Dashboard |
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Backend**: Node.js, Express.js (TypeScript), Prisma ORM, SQLite Database (`backend/prisma/dev.db`), JWT (`jsonwebtoken`), `bcryptjs`.
+- **Database**: Cloud PostgreSQL on **Neon** (`ep-aged-flower-azk5brgu.c-3.ap-southeast-1.aws.neon.tech`).
+- **Backend**: Node.js, Express.js (TypeScript), Prisma ORM, JWT (`jsonwebtoken`), `bcryptjs`, `cors`, `zod`.
 - **Frontend**: React 18 (TypeScript), Vite, Tailwind CSS, Lucide Icons, Axios.
-- **Tools & Docs**: Postman API Collection, Git.
+- **Testing & Tooling**: Postman v2.1 Collection, Git, ts-node-dev.
 
 ---
 
-## ⚙️ Quick Start & Local Setup Instructions
+## ⚙️ How the Server was Set Up & Running Locally
 
 ### Prerequisites
 - Node.js (v18 or higher)
 - npm or yarn
 
-### 1. Backend Setup
+### 1. Environment Variables Setup
+The backend uses a `.env` file located in `backend/.env`:
+```env
+PORT=5000
+DATABASE_URL="postgresql://neondb_owner:npg_tNBX7vw5xZId@ep-aged-flower-azk5brgu.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+JWT_SECRET="fundsroom_erp_secret_key_2026_secure"
+NODE_ENV="development"
+```
+
+### 2. Backend Setup & Database Migration
 ```bash
 cd backend
 npm install
 
-# Push database schema & seed test data
+# Generate Prisma Client & push schema to Neon PostgreSQL
+npx prisma generate
 npx prisma db push
-npx prisma db seed
 
-# Start backend server (runs on http://localhost:5000)
+# Seed initial test credentials, CRM leads & inventory catalog
+npm run prisma:seed
+
+# Start backend REST API server (runs on http://localhost:5000)
 npm run dev
 ```
 
-### 2. Frontend Setup
+### 3. Frontend Setup
 ```bash
-# Open a new terminal
+# Open a new terminal window
 cd frontend
 npm install
 
@@ -89,48 +102,44 @@ npm install
 npm run dev
 ```
 
-Open your browser at `http://localhost:3000` to access the application.
+Open your browser at `http://localhost:3000` to access the portal.
 
 ---
 
-## 📬 API Documentation & Postman Collection
+## 📬 Postman API Collection
 
-Import `docs/postman_collection.json` into Postman to test all backend REST APIs.
+A full Postman collection is exported at `docs/postman_collection.json`.
 
-### Main REST Endpoints
+### How to Import & Use:
+1. Open Postman and click **Import**.
+2. Select [docs/postman_collection.json](file:///c:/OneDrive/Desktop/Project/Pro-Projects/fundsroom_assignment/docs/postman_collection.json).
+3. The collection includes pre-configured environment variables (`{{baseUrl}}` = `http://localhost:5000/api`) and Bearer token headers for:
+   - `POST /api/auth/login` (Login with Admin/Sales/Warehouse/Accounts credentials)
+   - `GET /api/auth/me` (Profile Check)
+   - `POST /api/auth/logout`
+   - `GET /api/customers`, `POST /api/customers`, `POST /api/customers/:id/notes`
+   - `GET /api/products`, `POST /api/products`, `POST /api/products/:id/stock`
+   - `GET /api/challans`, `POST /api/challans`, `PATCH /api/challans/:id/status`
 
-#### Authentication
-- `POST /api/auth/login` — Authenticate user and receive JWT token
-- `GET /api/auth/me` — Retrieve current authenticated profile
-- `POST /api/auth/logout` — Invalidate user session
+---
 
-#### Customer CRM
-- `GET /api/customers` — Get customer list (search `q`, filter `customerType`, `status`)
-- `POST /api/customers` — Create new customer
-- `GET /api/customers/:id` — Get customer profile with follow-up logs
-- `POST /api/customers/:id/notes` — Add follow-up note log
+## 🏗 Architecture & Design Decisions
 
-#### Product & Inventory
-- `GET /api/products` — Get product catalog (filter `q`, `category`, `lowStock=true`)
-- `POST /api/products` — Add new product catalog item
-- `GET /api/products/:id` — Get product details with stock log audit trail
-- `POST /api/products/:id/stock` — Log stock movement (`IN` / `OUT`)
-
-#### Sales Challans
-- `GET /api/challans` — Get sales challan registry
-- `POST /api/challans` — Create sales challan (`DRAFT` or `CONFIRMED`)
-- `GET /api/challans/:id` — Get challan details with line item snapshots
-- `PATCH /api/challans/:id/status` — Transition status (`CONFIRMED` / `CANCELLED`)
+1. **Transactional Data Consistency**: Prisma `$transaction` is used during Challan Confirmation and Stock Movements to ensure that stock levels, stock audit logs, and challan status changes occur atomically.
+2. **Snapshot Pricing Pattern**: Line items store immutable name and price snapshots to safeguard financial reports against catalog updates.
+3. **Responsive Glassmorphism UI**: Built with modern Tailwind CSS dark slate design system, curated color palettes, and subtle micro-animations.
 
 ---
 
 ## 🌐 Deployment Instructions
 
-- **Frontend**: Deploy to Vercel or Netlify (`cd frontend && npm run build`). Set `VITE_API_URL` environment variable to live backend URL.
-- **Backend**: Deploy to Render, Railway, or Fly.io (`cd backend && npm run build`). Set `PORT`, `JWT_SECRET`, and `DATABASE_URL` environment variables.
+- **Database**: Cloud PostgreSQL deployed on **Neon** (`neon.tech`) in AWS AP-Southeast-1.
+- **Frontend**: Ready to deploy on **Vercel** / **Netlify** (`cd frontend && npm run build`). Set environment variable `VITE_API_URL` to live backend domain.
+- **Backend**: Ready to deploy on **Render** / **Railway** (`cd backend && npm run build`). Set environment variables `PORT`, `JWT_SECRET`, and `DATABASE_URL`.
 
 ---
 
 ## 📝 Submission Details
-- **Assignment**: Fundsroom Infotech Pvt. Ltd. Case Study
-- **Form Link**: [Google Form Submission](https://forms.gle/42khMh6vsBLvmefAA)
+- **Company**: Fundsroom Infotech Pvt. Ltd.
+- **Assignment**: Full Stack Developer Case Study — Mini ERP + CRM Operations Portal
+- **Submission Form**: [Google Form Link](https://forms.gle/42khMh6vsBLvmefAA)
