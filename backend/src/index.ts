@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import customerRoutes from './routes/customerRoutes';
 import productRoutes from './routes/productRoutes';
+import challanRoutes from './routes/challanRoutes';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/challans', challanRoutes);
 
 // Server Health Check Endpoint
 app.get('/api/health', (req: Request, res: Response) => {

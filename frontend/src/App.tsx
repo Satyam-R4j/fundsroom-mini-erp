@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './pages/Login';
 import { CustomerCRM } from './pages/CustomerCRM';
 import { Inventory } from './pages/Inventory';
+import { SalesChallans } from './pages/SalesChallans';
 import {
   Layers,
   ShieldCheck,
@@ -154,13 +155,7 @@ const MainContent: React.FC = () => {
 
       {activeTab === 'INVENTORY' && <Inventory />}
 
-      {activeTab === 'CHALLANS' && (
-        <div className="glass-card p-12 text-center rounded-2xl text-slate-400">
-          <FileText size={48} className="text-purple-500 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-slate-100">Sales Challans Module (Step 5)</h3>
-          <p className="mt-2 text-sm">Sales challan creation and stock deduction logic will be implemented in Step 5.</p>
-        </div>
-      )}
+      {activeTab === 'CHALLANS' && <SalesChallans />}
     </div>
   );
 };
