@@ -101,11 +101,17 @@ export const SalesChallans: React.FC = () => {
         api.get('/customers'),
         productService.getProducts(),
       ]);
-      setCustomers(custRes.data);
+      const customerList: CustomerOption[] = Array.isArray(custRes.data?.customers)
+        ? custRes.data.customers
+        : Array.isArray(custRes.data)
+        ? custRes.data
+        : [];
+
+      setCustomers(customerList);
       setProducts(prodRes);
 
-      if (custRes.data.length > 0) {
-        setSelectedCustomerId(custRes.data[0].id);
+      if (customerList.length > 0) {
+        setSelectedCustomerId(customerList[0].id);
       }
 
       if (prodRes.length > 0) {
